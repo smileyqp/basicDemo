@@ -1,0 +1,65 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>预加载(smileyqp.com)</title>
+<style>
+    .cover{
+        position:fixed;
+        top:0;
+        bottom:0;
+        left:0;
+        right:0;
+        background:pink;
+        text-align: center;
+    }
+    .imgcard{
+        width:100px;
+        height:100px;
+        border:1px solid red;
+    }
+    .imgcard img{
+        width:100px;
+        height:100px;
+    }
+</style>
+</head>
+<body>
+    <div id = 'img'>
+        
+    </div>
+        <h1>一个预加载的demo</h1>
+        <p>可以用chrome浏览器打开控制台；选择network；将速度改为Slow 3G；然后再刷新看效果，注意清除浏览器缓存后再刷新看效果</p>
+    <div id = 'cover' class = 'cover'>
+        
+        0%
+    </div>
+    <script>
+         var imgarr = [
+            'http://www.sz.gov.cn/cn/xxgk/zfxxgj/tpxw/201905/W020190508355754728261.jpg',
+            'http://www.sz.gov.cn/cn/xxgk/zfxxgj/tpxw/201910/W020191015381074459750.jpg',
+            'http://www.sz.gov.cn/cn/xxgk/zfxxgj/tpxw/201910/W020191012421431188792.jpg',
+            'http://www.sz.gov.cn/cn/xxgk/zfxxgj/tpxw/201910/W020191014404651968932.jpg'
+            ]
+        function preload(cover,resource){       //两个参数；一个是cover的dom节点，另外一个是资源列表
+            var length = resource.length;          //记录资源的长度；
+            var nowadd = 0;     //记录当前加载到哪一个节点
+            resource.forEach(function(item,index){
+                var img = new Image();
+                img.src = item;
+                img.onload = function(){        //onload指加载完成
+                    nowadd ++;                  //每加载完一个就标注一下；告诉加载到第几个
+                    document.body.append(img);
+                    cover.innerHTML = (nowadd/length)*100+'%';
+                    if(nowadd == length){
+                    cover.style.display = 'none';
+                    }
+                }
+                
+            });
+        }
+        preload(document.getElementById('cover'),imgarr);
+    </script>
+</body>
+</html>

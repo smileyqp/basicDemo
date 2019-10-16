@@ -1,0 +1,66 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>懒加载(smileyqp.com)</title>
+</head>
+<body>
+    <h1>一个懒加载的demo</h1>
+    <p>可以用chrome浏览器打开控制台；选择network；将速度改为Slow 3G；然后再刷新看效果，注意清除浏览器缓存后再刷新看效果</p>
+    <button id='test'>按需加载</button>
+    <script>
+        /**
+        * 懒加载：是指在资源需要的时候才去用js加载资源;一般不是首屏要看到的；非核心功能的懒加载，按需加载
+        * 预加载：是指在加载完成之后才对用户进行显示
+        * 图片不会阻塞dom渲染之哟普script标签会阻塞dom渲染
+        */
+        var imgarr = [
+            'http://www.sz.gov.cn/cn/xxgk/zfxxgj/tpxw/201905/W020190508355754728261.jpg',
+            'http://www.sz.gov.cn/cn/xxgk/zfxxgj/tpxw/201910/W020191015381074459750.jpg'
+            ]
+        var jsarr = [
+            'https://code.jquery.com/jquery-3.1.1.min.js',
+            'http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js'
+        ];
+        function lazyloader(url,type,target){
+            if(!url) throw new Error('the first arguments ,url, is not given');
+            if(!type) throw new Error('the second arguments ,type, is not given');
+            var target = target || document.body;               //这里的target不是必须的但是之后会要用到。设置默认参数
+            var cator = {                               //算法(命令)模式对象；分别创建img和js资源
+                img:function(){
+                    var img = new Image();
+                    return img;             //返回的是dom对象
+                },
+                js:function(){
+                    var script = document .createElement('script');
+                    return script;             //返回的是dom对象
+                }
+            }
+
+            if(typeof url == 'String'){                 //单个资源的懒加载；判断参数类型；判断是否单一资源;
+                var dom = cator[type]();                //这里省去了复杂的分支判断；即上面的命令模式对象判断是js还是img的懒加载
+                dom.src = url;
+                target.appendChild(dom);
+            }else{
+                url.forEach(function(item,index){       //多个资源的懒加载
+                    var dom = cator[type]();
+                    dom.src = item;
+                    target.appendChild(dom);
+                });
+            }
+        } 
+        //实现其他资源加载完成后在加载图片以及js资源；懒加载
+        window.onload = function(){
+            lazyloader(imgarr,'img');
+            lazyloader(jsarr,'js');
+        }
+        //实现点击按钮才去加载资源的按需加载；
+        //例如当点击按钮之后需要去实现一部分功能；非核心功能的懒加载；例如，页面上图片很多的时候，可以用懒加载进行优化
+        document.getElementById('test').onclick = function(){
+            lazyloader(imgarr,'img');
+            lazyloader(jsarr,'js');
+        }
+    </script>
+</body>
+</html>
