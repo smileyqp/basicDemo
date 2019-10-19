@@ -1,0 +1,202 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>flex布局</title>
+<style>
+    .box{
+        display:flex;
+        flex-direction: row;
+        height:900px;
+        background: yellow;
+        flex-wrap:wrap;
+        justify-content:space-around
+    }
+    .innerbox{
+        width:300px;
+        height:100px;
+        background: pink;
+        border: 1px solid black;
+    }
+    .innerbox1{
+        order:1;
+        width:300px;
+        height:100px;
+        background: pink;
+        border: 1px solid black;
+        display: inline-flex;
+        flex-direction: row;
+        justify-content:center,
+        
+    }
+</style>
+</head>
+<body>
+    <div class='box'>
+        <div class='innerbox'></div>
+        <div class='innerbox'></div>
+        <div class='innerbox'></div>
+        <div class='innerbox'></div>
+        <div class='innerbox'></div>
+        <div class='innerbox'></div>
+        <div class='innerbox1'>1</div>
+        <div class='innerbox1'>1</div>
+        <div class='innerbox1'>1</div>
+        <div class='innerbox1'>1</div>
+        <div class='innerbox1'>1</div>
+        <div class='innerbox1'>1</div>
+        <div class='innerbox'></div>
+        <div class='innerbox'></div>
+        <div class='innerbox'></div>
+        <div class='innerbox'></div>
+        <div class='innerbox'></div>
+        
+    </div>
+    <script>
+        (function(global){
+            //闭包AO中引用了GO中的数据；但是这个数据不会被销毁
+            var ele = global.document.getElementById('');
+        })(this)
+
+        function P(){
+            // Object.prototype
+            // Array.prototype
+            // constructor();
+        }
+        P.prototype = {
+            f1:function(){}
+        }
+
+        C.prototype = new P();
+        //new C().f1();
+        P.prototype = (new P()).__proto__;
+
+
+
+        //GO和AO
+        function test(a,b){
+            console.log(a);     //function a(){}
+
+            console.log(c);     //function c(){}            
+
+            var c = 123;
+
+            console.log(c);     //123
+
+            function a(){}
+
+            console.log(b);        //3
+
+            function c(){}
+
+            var b = function cd(){}
+
+            console.log(b)      //function cd(){}
+        }
+
+        test(1,3);
+
+
+        /**
+        函数预编译过程：AO对象
+        AO对象的的加载顺序；
+        函数执行的时候AO就会创建出来
+        初始化四个步骤：
+           1、创建AO对象(activation object);AO()
+           2、将函数所有的形参(函数传进来的参数)以及变量声明存储到AO对象中；value为undefined
+           3、将形参和实参统一
+           4、将所有的函数声明的函数名作为key，函数整体内容作为value存储到ao对象中 (函数覆盖变量)
+        **/
+
+
+                /**
+        AO是个隐式对象；他不是一个arguments对象；但是arguments对象是包含在AO对象之中的
+        1:
+        AO:{
+
+        }
+        2:只是将变量声明；只管形参变量将其放入AO中，不管函数
+        AO:{
+            //arguments：undefined,       //内置对象
+            a:undefined,        //形参
+            b:undefined,        //形参
+            c:undefined         //变量提升
+            //遇到var b = function cd(){}的时候因为已经有了，那么就会忽略它
+        }
+        3：形参和实参统一
+        AO:{
+            a:1,
+            b:3,
+            c:undefined
+        }
+        4:将函数名作为key，函数体作为value存储进AO
+        AO:{
+          a:function a(){},        //有声明函数a
+          b:3,      //并未声明函数b；b知识一个变量等于一个函数bc，所以此处不进行赋值函数
+          c:function c(){},         //有声明函数c
+          cd:function()
+        }
+
+        //上面四步骤都是函数预编译的过程中发生的四件事情；下面开始执行函数
+        执行的时候开始赋值;此时又上网易一次执行赋值
+        AO:{
+            a:function a(){},       
+            b:function cd(),       //将function cd(){}赋值给了b，因此在此之后b的值是一个function cd(){}
+            c:123,          //此时由于赋值原因此时c的值为123
+            cd:function()
+        }
+        
+        **/
+        
+
+
+
+
+
+        //GO和AO一样都是预加载；相当于有一个window{}对象
+        //任何AO都有两个内置对象；this和arguments
+        //产生三层作用域链
+        //第三层(GO)
+        function a(){
+            //第二层(AO)
+            function b(){   //[[Scopes]].length == 3
+                //第一层(AO)
+                var bb = 234;
+            }
+            var aa = 123;
+            b();
+        }
+        var glob = 100;
+        console.log(glob)   //100
+        function glob(){}
+        a();
+        
+        /**
+        GO预编译
+        1:创建对象
+        GO:{
+
+        }
+        2:变量初始化；value为undefined
+        GO:{
+            glob:undefined
+        }
+        3#4:形参实参统一，全局没有可以忽略；第四部函数key为函数米那个，value为函数体存储
+        GO:{
+            glob:function glob(){},
+            a:function a(){}
+        }
+        
+        GO执行：
+        GO:{
+           glob:100 
+        }
+
+
+        **/
+
+
+    </script>
+</body>
+</html>

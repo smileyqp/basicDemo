@@ -1,0 +1,25 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>模板引擎(smileyqp.com)</title>
+</head>
+<body>
+    <script src='./template.js'></script>
+    <script>
+        //模板特定的标记    模板标识符 {{}} <%%> 配置
+        /**
+         * 规则
+         * <% %>    逻辑代码
+         * <%= %>   变量的植入 ? 作用域with(data){} 去访问对象的作用域;做渲染函数的作用域的绑定
+         * <%- %>   逃逸的字符
+         **/
+        template("hello:<%if(xxx){} %>",{
+            //escape:/\{\{([\s\S]+?)\}\}/g,         //第二个接口是自定义模板引擎的配置
+        });
+    </script>
+    <h1>我的第一个标题</h1>
+    <p>我的第一个段落。</p>
+</body>
+</html>
