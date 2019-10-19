@@ -1,2 +1,2 @@
-./middleware/node_modules
 /node_modules
+/middleware/node_modules
