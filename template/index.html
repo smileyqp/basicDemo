@@ -15,9 +15,12 @@
          * <%= %>   变量的植入 ? 作用域with(data){} 去访问对象的作用域;做渲染函数的作用域的绑定
          * <%- %>   逃逸的字符
          **/
-        template("hello:<%if(xxx){} %>",{
+        var compiled = template("hello:<%if(xxx){} %>hello:<%= root %>",{               //template方法只是编译一下模板；compiled得到的只是字符串模板解析之后得到的结果
             //escape:/\{\{([\s\S]+?)\}\}/g,         //第二个接口是自定义模板引擎的配置
         });
+        compiled(data);
+
+
     </script>
     <h1>我的第一个标题</h1>
     <p>我的第一个段落。</p>
